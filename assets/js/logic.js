@@ -7,7 +7,8 @@ var initials = document.querySelector("#initials");
 var finalscore = document.querySelector("#final-score");
 var initialsEl = document.querySelector("initials");
 
-
+// new variables
+var userScore = 0;
 
 // Import sound effects
 var sfxRight = new Audio("assets/sfx/correct.wav");
