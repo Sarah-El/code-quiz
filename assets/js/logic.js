@@ -1,21 +1,58 @@
 // Query selector variables from index HTML
-var startBtn = document.querySelector("#start");
+var startQuiz = document.querySelector("#start");
+var startScreen = document.querySelector("#start-screen");
 var submitBtn = document.querySelector("#submit");
-var timer = document.querySelector("#time");
-var choices = document.querySelector("#choices");
+var timeLeft = document.querySelector("#time");
 var initials = document.querySelector("#initials");
-var finalscore = document.querySelector("#final-score");
-var initialsEl = document.querySelector("initials");
+var finalScore = document.querySelector("#final-score");
+var endScreen = document.querySelector("#end-screen");
+var feedback = document.querySelector("#feedback");
+var questions = document.querySelector("#questions");
+var questionTitle = document.querySelector("#question-title");
+var choices = document.querySelector("#choices");
 
-// new variables
-var userScore = 0;
+
+
+// Time variables
+var timer = 75;
+
+// function to set timer
+function timerCountdown () {
+    var countdown = setInterval (() => {
+        timeLeft.textContent = timer;
+        timer--;
+
+        if (timeLeft > 0) {
+            timeLeft.textContent = "Your score is " + timer;
+        } else (timeLeft<= 0) {
+            clearInterval(countdown);
+            timeLeft.textContent = "Sorry, you ran out of time! Please try again.";
+            endQuiz ();
+        } 
+    })
+}
 
 // Import sound effects
 var sfxRight = new Audio("assets/sfx/correct.wav");
 var sfxWrong = new Audio("assets/sfx/incorrect.wav");
+// sfxWrong.play();
+// sfxRight.play();
 
-// play "wrong" sound effect
-sfxWrong.play();
+// Add questions to HTML
 
-// play "right" sound effect
-sfxRight.play();
+// Start quiz function
+startQuiz.addEventListener("click", function(event) {
+    startQuiz.setAttribute("style", "display:none;");
+    startTimer();
+    addAnswers(currentQuestion);
+    
+});
+
+// // Single questions
+// var questionOne = questions [0];
+// var questionTwo = questions [1];
+// var questionThree = questions [2];
+// var questionFour = questions [3];
+// var questionFive = questions [4];
+
+// Start quiz
