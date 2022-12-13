@@ -3,15 +3,15 @@ var sfxRight = new Audio("assets/sfx/correct.wav");
 var sfxWrong = new Audio("assets/sfx/incorrect.wav");
 
 // Page variables
-var startButton = document.getElementById("start");
-var finishQuiz = document.getElementById("end-screen");
-var questionTitle = document.getElementById("question-title");
+var startButton = document.querySelector("#start");
+var finishQuiz = document.querySelector("#end-screen");
+var questionTitle = document.querySelector("#question-title");
 var startScreen = document.querySelector('#start-screen');
-var feedback = document.getElementById("feedback");
-var timer = document.querySelector(".timer");
-var finalScore = document.getElementById("final-score");
-var questionsScreen = document.getElementById("questions");
-var answers = document.getElementById("choices");
+var feedback = document.querySelector("#feedback");
+var timer = document.querySelector("#time");
+var finalScore = document.querySelector("#final-score");
+var questionsScreen = document.querySelector("#questions");
+var answers = document.querySelector("#choices");
 
 // Event listener
 startButton.addEventListener("click", startButtonClicked);
@@ -129,3 +129,5 @@ function endGame ()
 function storeScore (initals) {
         localStorage.setItem("highscore", time);
 }
+
+// Store user score 
