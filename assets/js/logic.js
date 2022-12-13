@@ -22,14 +22,26 @@ function timerCountdown () {
         timeLeft.textContent = timer;
         timer--;
 
-        if (timeLeft > 0) {
-            timeLeft.textContent = "Your score is " + timer;
-        } else (timeLeft<= 0) {
-            clearInterval(countdown);
-            timeLeft.textContent = "Sorry, you ran out of time! Please try again.";
-            endQuiz ();
-        } 
-    })
+        if (currentQuestionIndex > 5) {
+            clearInterval(countDown);
+            timer.classList.add("hide");
+        }
+        if (timeLeft < 0) {
+            clearInterval(countDown);
+            timer.classList.add("hide");
+            timeLeft = 0;
+            time.innerHTML = 0;
+            showResult();
+        }
+
+        // if (timeLeft > 0) {
+        //     timeLeft.textContent = "Your score is " + timer;
+        // } else (timeLeft<= 0) {
+        //     clearInterval(countdown);
+        //     timeLeft.textContent = "Sorry, you ran out of time! Please try again.";
+        //     endQuiz ();
+        // } 
+    }, 1000);
 }
 
 // Import sound effects
@@ -56,3 +68,23 @@ startQuiz.addEventListener("click", function(event) {
 // var questionFive = questions [4];
 
 // Start quiz
+function startQuiz() {
+    var currentQuestion = questions[currentQuestionIndex];
+    var choices = currentQuestion.choices;
+
+    startScreen.classList.add("hide");
+
+    questionTitle.innerText = currentQuestion.title;
+
+    for (var i = 0; i < choices.length; i++) {
+        var choice = choices[i];
+
+        choicesOptions.insertAdjacentHTML(
+            "beforeend",
+            `
+      <button value=${choice} onclick="checkAnswer">${choice}</button>
+      `
+        );
+    }
+    questionWrap.classList.remove("hide");
+}
