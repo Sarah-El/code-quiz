@@ -1,90 +1,131 @@
-// Query selector variables from index HTML
-var startQuiz = document.querySelector("#start");
-var startScreen = document.querySelector("#start-screen");
-var submitBtn = document.querySelector("#submit");
-var timeLeft = document.querySelector("#time");
-var initials = document.querySelector("#initials");
-var finalScore = document.querySelector("#final-score");
-var endScreen = document.querySelector("#end-screen");
-var feedback = document.querySelector("#feedback");
-var questions = document.querySelector("#questions");
-var questionTitle = document.querySelector("#question-title");
-var choices = document.querySelector("#choices");
-
-
-
-// Time variables
-var timer = 75;
-
-// function to set timer
-function timerCountdown () {
-    var countdown = setInterval (() => {
-        timeLeft.textContent = timer;
-        timer--;
-
-        if (currentQuestionIndex > 5) {
-            clearInterval(countDown);
-            timer.classList.add("hide");
-        }
-        if (timeLeft < 0) {
-            clearInterval(countDown);
-            timer.classList.add("hide");
-            timeLeft = 0;
-            time.innerHTML = 0;
-            showResult();
-        }
-
-        // if (timeLeft > 0) {
-        //     timeLeft.textContent = "Your score is " + timer;
-        // } else (timeLeft<= 0) {
-        //     clearInterval(countdown);
-        //     timeLeft.textContent = "Sorry, you ran out of time! Please try again.";
-        //     endQuiz ();
-        // } 
-    }, 1000);
-}
-
-// Import sound effects
+// Add sound effects
 var sfxRight = new Audio("assets/sfx/correct.wav");
 var sfxWrong = new Audio("assets/sfx/incorrect.wav");
-// sfxWrong.play();
-// sfxRight.play();
 
-// Add questions to HTML
+// Page variables
+var startButton = document.getElementById("start");
+var finishQuiz = document.getElementById("end-screen");
+var questionTitle = document.getElementById("question-title");
+var startScreen = document.querySelector('#start-screen');
+var feedback = document.getElementById("feedback");
+var timer = document.querySelector(".timer");
+var finalScore = document.getElementById("final-score");
+var questionsScreen = document.getElementById("questions");
+var answers = document.getElementById("choices");
 
-// Start quiz function
-startQuiz.addEventListener("click", function(event) {
-    startQuiz.setAttribute("style", "display:none;");
-    startTimer();
-    addAnswers(currentQuestion);
-    
-});
+// Event listener
+startButton.addEventListener("click", startButtonClicked);
+var answerButton = choices.addEventListener('click', Answers);
 
-// // Single questions
-// var questionOne = questions [0];
-// var questionTwo = questions [1];
-// var questionThree = questions [2];
-// var questionFour = questions [3];
-// var questionFive = questions [4];
+// Timer countdown
+var time = 50;
+var timeDisplay = document.getElementById("time");
+timeDisplay.textContent = (time);
+
+function timerCountdown()
+{
+    var interval = setInterval(function () {
+        if (time > 0) {
+            time--;
+            timeDisplay.textContent = time;
+        }
+        else if (time >= 0) {
+            clearInterval(interval);
+            endGame();
+        }
+    }, 1000)
+}
+
+// Show questions on page
+var currentQuestion = 0;
+
+function renderQuestion(index) {
+    if (currentQuestion >= questions.length) {
+        endGame();
+    }
+    else {questionsScreen.classList.remove("hide");
+    answers.innerHTML = "";
+    questionTitle.textContent = questions[index].title;
+
+    for (j = 0; j < questions[index].choices.length; j++) 
+    {var choice = document.createElement("button");
+    choice.textContent = questions[index].choices[j];
+    answers.appendChild(choice);
+    answers.classList.add("answers");}
+    }
+}
+
+function isCorrect (answer) {
+    if (answer === questions[currentQuestion].answer)
+    {
+        return true;
+    }
+    else 
+    {
+        return false;
+    }
+}
+function Answers (event) 
+{
+    var result = document.createElement("p");
+    feedback.innerHTML = "";
+    if (isCorrect(event.target.innerText)) 
+    {   currentQuestion++;
+        feedback.classList.remove("hide");
+        var result = document.createElement("p");
+        feedback.appendChild(result);
+        result.textContent = "Correct";
+        sfxRight.play();
+       
+        renderQuestion(currentQuestion);
+    }
+    else 
+    {   time = time - 10;
+        currentQuestion++;
+        feedback.classList.remove("hide");
+        var result = document.createElement("p");
+        feedback.appendChild(result);
+        result.textContent = "Wrong";
+        sfxWrong.play();
+        
+        renderQuestion(currentQuestion);
+    }
+}
 
 // Start quiz
-function startQuiz() {
-    var currentQuestion = questions[currentQuestionIndex];
-    var choices = currentQuestion.choices;
 
-    startScreen.classList.add("hide");
+function startButtonClicked() {
+    timerCountdown();
+    clearScreen();
+    renderQuestion(currentQuestion);
+}
 
-    questionTitle.innerText = currentQuestion.title;
+function clearScreen() 
+{
+    startScreen.textContent = "";
+    var currentQuestion = 0;
+    return;
+}
 
-    for (var i = 0; i < choices.length; i++) {
-        var choice = choices[i];
-
-        choicesOptions.insertAdjacentHTML(
-            "beforeend",
-            `
-      <button value=${choice} onclick="checkAnswer">${choice}</button>
-      `
-        );
+// End quiz
+function endGame () 
+{
+    questionsScreen.classList.add("hide");
+    finishQuiz.classList.remove("hide");
+    timer.classList.add("hide");
+    startScreen.textContent = "";
+    localStorage.setItem("highscore", time);
+    
+    if (time > 0) 
+    {
+        finalScore.textContent = time;
     }
-    questionWrap.classList.remove("hide");
+    else if (time <= 0)
+    {
+        finalScore.textContent = "Sorry, your score is " + time+ "."+ "Please try again."
+    }
+}
+
+function storeScore (initals) {
+        localStorage.setItem("highscore", time);
 }
