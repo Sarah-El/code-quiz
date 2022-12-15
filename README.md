@@ -1,7 +1,7 @@
 # Code Quiz
 
 ## Description
-An online JavaScript code quiz for web developer students.
+An online JavaScript code quiz for web developer students. For each wrong answer, user looses 10 seconds of time. The final remailing time is the users score.
 
 ## User Story
 AS A coding boot camp student
@@ -33,3 +33,5 @@ Please refer to the licence in the repo.
 https://sarah-el.github.io/code-quiz/
 
 ## Screenshots
+![image](https://user-images.githubusercontent.com/117095370/207811948-410605da-959e-4554-989a-41b7899a3cf9.png)
+
