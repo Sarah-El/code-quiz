@@ -12,10 +12,12 @@ var timer = document.querySelector("#time");
 var finalScore = document.querySelector("#final-score");
 var questionsScreen = document.querySelector("#questions");
 var answers = document.querySelector("#choices");
+var submitInitialsBtn = document.querySelector("#submit");
 
 // Event listener
 startButton.addEventListener("click", startButtonClicked);
 var answerButton = choices.addEventListener('click', Answers);
+submitInitialsBtn.addEventListener("click", submitInitials);
 
 // Timer countdown
 var time = 50;
@@ -36,6 +38,10 @@ function timerCountdown()
     }, 1000)
 }
 
+function stopTimer () {
+    clearInterval(setTimer);
+}
+
 // Show questions on page
 var currentQuestion = 0;
 
@@ -47,10 +53,10 @@ function renderQuestion(index) {
     answers.innerHTML = "";
     questionTitle.textContent = questions[index].title;
 
-    for (j = 0; j < questions[index].choices.length; j++) 
-    {var choice = document.createElement("button");
-    choice.textContent = questions[index].choices[j];
-    answers.appendChild(choice);
+    for (i = 0; i < questions[index].choices.length; i++) 
+    {var answer = document.createElement("button");
+    answer.textContent = questions[index].choices[i];
+    answers.appendChild(answer);
     answers.classList.add("answers");}
     }
 }
@@ -122,12 +128,17 @@ function endGame ()
     }
     else if (time <= 0)
     {
-        finalScore.textContent = "Sorry, your score is " + time+ "."+ "Please try again."
+        finalScore.textContent = time+ "."+ " Please try again"
     }
 }
 
-function storeScore (initals) {
-        localStorage.setItem("highscore", time);
-}
-
 // Store user score 
+function submitInitials () {
+    var userInitials = document.getElementById("initials").value;
+
+    if (userInitials === "") {
+        return;
+    } else {
+        addhighScore(userInitials, time);
+    }
+}
